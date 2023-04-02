@@ -27,16 +27,18 @@ function spaceClicked(space){
     console.log(`space ${space.id} was pressed`);
     if(gameActive){
         if(player0.isTurn && !space.taken){
-            space.textContent = `${player0.marker}`;
+            space.querySelector('.space-content').textContent = `${player0.marker}`;
             space.taken = true;
+            space.classList.add('filled');
             player0.playerSpaces.push(space);
             player0.isTurn = !player0.isTurn;
             player1.isTurn = !player1.isTurn;
             checkGameStatus();
         }
         else if(player1.isTurn && !space.taken){
-            space.textContent = `${player1.marker}`;
+            space.querySelector('.space-content').textContent = `${player1.marker}`;
             space.taken = true;
+            space.classList.add('filled');
             player1.playerSpaces.push(space);
             player0.isTurn = !player0.isTurn;
             player1.isTurn = !player1.isTurn;
@@ -48,8 +50,10 @@ function spaceClicked(space){
 }
 function checkGameStatus(){
     if (Array.from(gameBoard.spaces).every(space => space.taken === true)) {
-        alert('Tie! Press (Re)start to play again!');
         gameActive = false;
+        setTimeout(() => {
+            alert('Tie! Press (Re)start to play again!');
+        }, 1000);
         return;
     }
     checkForWins(player0);
@@ -70,19 +74,23 @@ function checkForWins(player){
     }
     for(const winningSet of winningSets){
         if (containsAll([`${winningSet[0]}`, `${winningSet[1]}`, `${winningSet[2]}`], checkableSpaces)){
-            alert(`${player.username} wins! Press (Re)start to play again!`);
+            
             gameActive = false;
+            setTimeout(() => {
+                alert(`${player.username} wins! Press (Re)start to play again!`);
+            }, 1000);
         }
         else{continue};
     }
     return;
 }
-function resetEverything(){
+function resetEverything() {
     console.log('resetEverything run')
     correctOpacity()
-    for(const space of gameBoard.spaces){
-        space.textContent = '';
+    for (const space of gameBoard.spaces) {
+        space.querySelector('.space-content').textContent = ''; 
         space.taken = false;
+        space.classList.remove('filled');
     }
     player0.playerSpaces = [];
     player1.playerSpaces = [];
