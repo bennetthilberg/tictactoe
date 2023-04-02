@@ -8,10 +8,15 @@ const playerFactory = (username, isTurn, marker, playerSpaces) => {
     playerSpaces = [];
     return {username, isTurn, marker, playerSpaces: []};
 };
+let player0;
+let player1;
 
 let gameActive = false;
 function startGame(){
     console.log('startGame run');
+    checkInvalidPrefs();
+    player0 = playerFactory(document.querySelector('#p0name').value, false, document.querySelector('#p0marker').value);
+    player1 = playerFactory(document.querySelector('#p1name').value, false, document.querySelector('#p1marker').value);
     resetEverything();
     player0.isTurn = true;
     gameActive = true;
@@ -43,7 +48,7 @@ function spaceClicked(space){
 }
 function checkGameStatus(){
     if (Array.from(gameBoard.spaces).every(space => space.taken === true)) {
-        console.log('tie!');
+        alert('Tie! Press (Re)start to play again!');
         gameActive = false;
         return;
     }
@@ -65,7 +70,7 @@ function checkForWins(player){
     }
     for(const winningSet of winningSets){
         if (containsAll([`${winningSet[0]}`, `${winningSet[1]}`, `${winningSet[2]}`], checkableSpaces)){
-            console.log(`${player.username} wins!`);
+            alert(`${player.username} wins! Press (Re)start to play again!`);
             gameActive = false;
         }
         else{continue};
@@ -95,9 +100,21 @@ function correctOpacity(){
     }
 }
 
+/*
 let player0 = playerFactory('john', false, 'X');
 let player1 = playerFactory('bob', false, 'O');
-
+*/
+function checkInvalidPrefs(){
+    if(
+        !document.querySelector('#p0name').value ||
+        !document.querySelector('#p0name').value ||
+        !document.querySelector('#p0marker').value ||
+        !document.querySelector('#p1marker').value
+    ){
+        alert('You forgot to input something!');
+        location.reload();
+    }
+}
 let spaceIterator = 0;
 for(const space of gameBoard.spaces){
     space.id = spaceIterator;
