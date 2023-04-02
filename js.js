@@ -6,7 +6,7 @@ startButton.addEventListener('click', () => startGame())
 
 const playerFactory = (username, isTurn, marker, playerSpaces) => {
     playerSpaces = [];
-    return {username, isTurn, marker, playerSpaces};
+    return {username, isTurn, marker, playerSpaces: []};
 };
 
 let gameActive = false;
@@ -15,8 +15,10 @@ function startGame(){
     resetEverything();
     player0.isTurn = true;
     gameActive = true;
+    correctOpacity()
 }
 function spaceClicked(space){
+    correctOpacity()
     console.log(`space ${space.id} was pressed`);
     if(gameActive){
         if(player0.isTurn && !space.taken){
@@ -40,9 +42,8 @@ function spaceClicked(space){
     
 }
 function checkGameStatus(){
-    // check for tie
     if (Array.from(gameBoard.spaces).every(space => space.taken === true)) {
-        alert('tie!');
+        console.log('tie!');
         gameActive = false;
         return;
     }
@@ -57,6 +58,7 @@ function containsAll(array1, array2) {
   }
   
 function checkForWins(player){
+    correctOpacity()
     let checkableSpaces = [];
     for(const space of player.playerSpaces){
         checkableSpaces.push(`${space.id}`)
@@ -64,6 +66,7 @@ function checkForWins(player){
     for(const winningSet of winningSets){
         if (containsAll([`${winningSet[0]}`, `${winningSet[1]}`, `${winningSet[2]}`], checkableSpaces)){
             console.log(`${player.username} wins!`);
+            gameActive = false;
         }
         else{continue};
     }
@@ -71,13 +74,25 @@ function checkForWins(player){
 }
 function resetEverything(){
     console.log('resetEverything run')
-    gameBoard.offsetHeight; // fuck da cache
+    correctOpacity()
     for(const space of gameBoard.spaces){
         space.textContent = '';
         space.taken = false;
     }
     player0.playerSpaces = [];
     player1.playerSpaces = [];
+    player0.isTurn = true;
+    player1.isTurn = false;
+    gameActive = true;
+}
+
+function correctOpacity(){
+    if(gameActive){
+        gameBoard.style.opacity = '1';
+    }
+    else{
+        gameBoard.style.opacity = '0.15';
+    }
 }
 
 let player0 = playerFactory('john', false, 'X');
