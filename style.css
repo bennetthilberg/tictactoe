@@ -1,0 +1,27 @@
+.gameBoard{
+    height: 600px;
+    width: 600px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    background-color: black;
+    grid-gap: 8px;
+}
+.space{
+    background-color: rgb(230, 229, 229);
+    font-size: 70px;
+}
+.space:hover{
+    cursor: pointer;
+}
+.startButton{
+    font-size: 32px;
+    margin: 8px;
+    background-color: purple;
+    width: 100px;
+    color: white;
+    padding: 4px;
+}
+.startButton:hover{
+    cursor: pointer;
+}
